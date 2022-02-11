@@ -21,7 +21,8 @@ import {
 } from './styles';
 
 type FormData = {
-	[key: string]: any;
+	name: string;
+	amount: string;
 };
 
 const schema = Yup.object().shape({
@@ -63,7 +64,7 @@ export function Register() {
 		setCategoryModalOpen(false);
 	}
 
-	function handleRegister(form: FormData) {
+	function handleRegister(form: FormData | any) {
 		if (!transactionType) {
 			return Alert.alert('Selecione o tipo da transação.');
 		}
