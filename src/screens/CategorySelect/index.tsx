@@ -6,7 +6,7 @@ import {
 	Container,
 	Header,
 	Title,
-	Category,
+	CategoryItem,
 	Icon,
 	Name,
 	Separator,
@@ -18,13 +18,21 @@ type Category = {
 	name: string;
 };
 
-interface CategorySelectModalProps {
-	category: string;
+interface CategorySelectProps {
+	category: Category;
 	setCategory: (category: Category) => void;
-	closeSelect: () => void;
+	closeSelectCategory: () => void;
 }
 
-export function CategorySelectModal({ category }: CategorySelectModalProps) {
+export function CategorySelect({
+	category,
+	setCategory,
+	closeSelectCategory,
+}: CategorySelectProps) {
+	function handleCategorySelect(category: Category) {
+		setCategory(category);
+	}
+
 	return (
 		<Container>
 			<Header>
@@ -36,16 +44,20 @@ export function CategorySelectModal({ category }: CategorySelectModalProps) {
 				style={{ flex: 1, width: '100%' }}
 				keyExtractor={(item) => item.key}
 				renderItem={({ item }) => (
-					<Category>
+					<CategoryItem
+						onPress={() => handleCategorySelect(item)}
+						isActive={category.key === item.key}
+						activeOpacity={0.6}
+					>
 						<Icon name={item.icon} />
 						<Name>{item.name}</Name>
-					</Category>
+					</CategoryItem>
 				)}
 				ItemSeparatorComponent={() => <Separator />}
 			/>
 
 			<Footer>
-				<Button title="Selecionar" />
+				<Button title="Selecionar" onPress={closeSelectCategory} />
 			</Footer>
 		</Container>
 	);
