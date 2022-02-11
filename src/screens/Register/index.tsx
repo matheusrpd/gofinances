@@ -27,8 +27,12 @@ type FormData = {
 const schema = Yup.object().shape({
 	name: Yup.string().required('Nome é obrigátorio'),
 	amount: Yup.number()
+		.transform((_value, originalValue) =>
+			Number(originalValue.replace(/,/, '.'))
+		)
 		.typeError('Informe um valor númerico')
-		.positive('O valor não pode ser negativo'),
+		.positive('O valor não pode ser negativo')
+		.required('Preço é obrigátorio'),
 });
 
 export function Register() {
@@ -72,7 +76,7 @@ export function Register() {
 			name: form.name,
 			amount: form.amount,
 			transactionType,
-			category,
+			category: category.name,
 		};
 
 		console.log(data);
