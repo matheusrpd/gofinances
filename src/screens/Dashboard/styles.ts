@@ -21,7 +21,7 @@ export const Header = styled.View`
 export const UserWrapper = styled.View`
   width: 100%;
 
-  padding: 0 24px;
+  padding: 0 ${RFValue(24)}px;
   margin-top: ${getStatusBarHeight() + RFValue(28)}px;
 
   flex-direction: row;
