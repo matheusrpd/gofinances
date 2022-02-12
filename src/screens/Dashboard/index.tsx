@@ -13,6 +13,7 @@ import {
 	User,
 	UserGreeting,
 	UserName,
+	LogouButton,
 	Icon,
 	HighlightCards,
 	Transactions,
@@ -64,7 +65,9 @@ export function Dashboard() {
 						</User>
 					</UserInfo>
 
-					<Icon name="power" />
+					<LogouButton>
+						<Icon name="power" />
+					</LogouButton>
 				</UserWrapper>
 			</Header>
 
