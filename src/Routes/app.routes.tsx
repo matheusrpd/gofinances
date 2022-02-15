@@ -7,6 +7,12 @@ import { Dashboard } from '../screens/Dashboard';
 import { Register } from '../screens/Register';
 import { RFValue } from 'react-native-responsive-fontsize';
 
+export type GoFinancesRoutesList = {
+	Listagem: undefined;
+	Cadastrar: undefined;
+	Resumo: undefined;
+};
+
 const { Navigator, Screen } = createBottomTabNavigator();
 
 export function AppRoutes() {
