@@ -11,9 +11,10 @@ interface SignInSocialButtonProps extends RectButtonProps {
 export function SignInSocialButton({
 	title,
 	icon: Icon,
+	...rest
 }: SignInSocialButtonProps) {
 	return (
-		<Container>
+		<Container {...rest}>
 			<ImageContainer>
 				<Icon />
 			</ImageContainer>
