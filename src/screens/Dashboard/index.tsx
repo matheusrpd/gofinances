@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -25,7 +25,7 @@ import {
 	Transactions,
 	Title,
 	TransactionsList,
-	LoadContaienr,
+	LoadContainer,
 } from './styles';
 import { formatNumberCurrency } from '../../utils/formatNumberCurrency';
 import { getLastTransactionDate } from '../../utils/getLastTransactionDate';
@@ -121,11 +121,6 @@ export function Dashboard() {
 		await AsyncStorage.removeItem(dataKey);
 	}
 
-	useEffect(() => {
-		loadTransactions();
-		// removeAll();
-	}, []);
-
 	useFocusEffect(
 		useCallback(() => {
 			loadTransactions();
@@ -135,9 +130,9 @@ export function Dashboard() {
 	return (
 		<Container>
 			{isLoading ? (
-				<LoadContaienr>
+				<LoadContainer>
 					<ActivityIndicator color={theme.colors.primary} size="large" />
-				</LoadContaienr>
+				</LoadContainer>
 			) : (
 				<>
 					<Header>
