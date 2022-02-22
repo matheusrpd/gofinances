@@ -9,6 +9,8 @@ import { ptBR } from 'date-fns/locale';
 import { useTheme } from 'styled-components';
 import { useFocusEffect } from '@react-navigation/native';
 
+import { useAuth } from '../../contexts/AuthContext';
+
 import { categories } from '../../utils/categories';
 import { formatNumberCurrency } from '../../utils/formatNumberCurrency';
 
@@ -52,6 +54,8 @@ export function Resume() {
 
 	const theme = useTheme();
 
+	const { user } = useAuth();
+
 	function handleDateChange(action: 'next' | 'prev') {
 		if (action === 'next') {
 			setSelectedDate(addMonths(selectedDate, 1));
@@ -63,7 +67,7 @@ export function Resume() {
 	async function loadTransactions() {
 		setIsLoading(true);
 
-		const dataKey = '@gofinances:transactions';
+		const dataKey = `@gofinances:transactions_user:${user?.id}`;
 		const response = await AsyncStorage.getItem(dataKey);
 		const responseFormatted = response ? JSON.parse(response) : [];
 

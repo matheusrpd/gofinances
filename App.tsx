@@ -1,7 +1,6 @@
 import { ThemeProvider } from 'styled-components';
 import { StatusBar } from 'react-native';
 import AppLoading from 'expo-app-loading';
-import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
@@ -15,10 +14,9 @@ import {
 
 import theme from './src/global/styles/theme';
 
-import { AuthProvider } from './src/contexts/AuthContext';
+import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 
-import { AppRoutes } from './src/Routes/app.routes';
-import { SignIn } from './src/screens/SignIn';
+import { Routes } from './src/routes';
 
 export default function App() {
 	const [fontsLoader] = useFonts({
@@ -27,23 +25,23 @@ export default function App() {
 		Poppins_700Bold,
 	});
 
-	if (!fontsLoader) {
+	const { isLoading } = useAuth();
+
+	if (!fontsLoader || isLoading) {
 		return <AppLoading />;
 	}
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
 			<ThemeProvider theme={theme}>
-				<NavigationContainer>
-					<AuthProvider>
-						<StatusBar
-							barStyle="light-content"
-							backgroundColor="transparent"
-							translucent
-						/>
-						<SignIn />
-					</AuthProvider>
-				</NavigationContainer>
+				<AuthProvider>
+					<StatusBar
+						barStyle="light-content"
+						backgroundColor="transparent"
+						translucent
+					/>
+					<Routes />
+				</AuthProvider>
 			</ThemeProvider>
 		</GestureHandlerRootView>
 	);

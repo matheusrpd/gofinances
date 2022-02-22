@@ -8,6 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { useNavigation } from '@react-navigation/native';
 
+import { useAuth } from '../../contexts/AuthContext';
+
 import { InputForm } from '../../components/Form/InputForm';
 import { Button } from '../../components/Form/Button';
 
@@ -47,6 +49,8 @@ export function Register() {
 		key: 'category',
 		name: 'Categoria',
 	});
+
+	const { user } = useAuth();
 
 	const navigation = useNavigation();
 
@@ -90,7 +94,7 @@ export function Register() {
 		};
 
 		try {
-			const dataKey = '@gofinances:transactions';
+			const dataKey = `@gofinances:transactions_user:${user?.id}`;
 
 			const data = await AsyncStorage.getItem(dataKey);
 			const currentData = data ? JSON.parse(data) : [];

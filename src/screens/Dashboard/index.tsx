@@ -3,6 +3,7 @@ import { ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
+import { useAuth } from '../../contexts/AuthContext';
 
 import { HighlightCard } from '../../components/HighlightCard';
 import {
@@ -45,8 +46,6 @@ type HighlightCardData = {
 	total: HighlightData;
 };
 
-const dataKey = '@gofinances:transactions';
-
 export function Dashboard() {
 	const [transactions, setTransactions] = useState<CardListProps[]>([]);
 	const [highlightCardData, setHighlightCardData] = useState<HighlightCardData>(
@@ -55,9 +54,11 @@ export function Dashboard() {
 	const [isLoading, setIsLoading] = useState(true);
 	const theme = useTheme();
 
-	async function loadTransactions() {
-		const dataKey = '@gofinances:transactions';
+	const { user, signOut } = useAuth();
 
+	const dataKey = `@gofinances:transactions_user:${user?.id}`;
+
+	async function loadTransactions() {
 		const response = await AsyncStorage.getItem(dataKey);
 		const transactions = response ? JSON.parse(response) : [];
 
@@ -95,18 +96,27 @@ export function Dashboard() {
 			transactions,
 			'down'
 		);
-		const totalInterval = `01 à ${lastTransactionsExpensives}`;
+		const totalInterval =
+			lastTransactionsExpensives === 0
+				? 'Não há transações'
+				: `01 à ${lastTransactionsExpensives}`;
 
 		const total = entriesTotal - expensiveTotal;
 
 		setHighlightCardData({
 			entries: {
 				amount: formatNumberCurrency(entriesTotal),
-				lastTransaction: `Última entrada dia ${lastTransactionsEntries}`,
+				lastTransaction:
+					lastTransactionsEntries === 0
+						? 'Não há transações'
+						: `Última entrada dia ${lastTransactionsEntries}`,
 			},
 			expensive: {
 				amount: formatNumberCurrency(expensiveTotal),
-				lastTransaction: `Última saída dia ${lastTransactionsExpensives}`,
+				lastTransaction:
+					lastTransactionsExpensives === 0
+						? 'Não há transações'
+						: `Última saída dia ${lastTransactionsExpensives}`,
 			},
 			total: {
 				amount: formatNumberCurrency(total),
@@ -138,14 +148,14 @@ export function Dashboard() {
 					<Header>
 						<UserWrapper>
 							<UserInfo>
-								<Photo source={{ uri: 'https://github.com/matheusrpd.png' }} />
+								<Photo source={{ uri: user?.photo }} />
 								<User>
 									<UserGreeting>Olá,</UserGreeting>
-									<UserName>Matheus</UserName>
+									<UserName>{user?.name}</UserName>
 								</User>
 							</UserInfo>
 
-							<LogouButton>
+							<LogouButton onPress={signOut}>
 								<Icon name="power" />
 							</LogouButton>
 						</UserWrapper>
